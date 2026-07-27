@@ -1,0 +1,185 @@
+# index.js
+Goat.newVersionDetected=𝖵𝗈𝗎𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗓 𝗅𝖺 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 %1, 𝗅𝖺 𝖽𝖾𝗋𝗇𝗂è𝗋𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 𝖾𝗌𝗍 %2. 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝗆𝖾𝗍𝗍𝗋𝖾 à 𝗃𝗈𝗎𝗋 𝗉𝗈𝗎𝗋 𝗆𝗂𝖾𝗎𝗑 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍 𝖾𝗇 𝗍𝖺𝗉𝖺𝗇𝗍 𝖽𝖺𝗇𝗌 𝗅𝖺 𝖼𝗈𝗇𝗌𝗈𝗅𝖾/𝖼𝗆𝖽 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 : %3
+Goat.autoRestart1=𝖫𝖾 𝖻𝗈𝗍 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋𝖾𝗋𝖺 𝖺𝗎𝗍𝗈𝗆𝖺𝗍𝗂𝗊𝗎𝖾𝗆𝖾𝗇𝗍 𝖽𝖺𝗇𝗌 %1
+Goat.autoRestart2=𝖫𝖾 𝖻𝗈𝗍 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋𝖾𝗋𝖺 𝖺𝗎𝗍𝗈𝗆𝖺𝗍𝗂𝗊𝗎𝖾𝗆𝖾𝗇𝗍 𝗉𝖺𝗋 𝖼𝗋𝗈𝗇 𝗃𝗈𝖻 : %1
+Goat.googleApiTokenExpired=𝖫𝖾 𝗃𝖾𝗍𝗈𝗇 𝖽'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖦𝗈𝗈𝗀𝗅𝖾 𝖠𝖯𝖨 𝖺 𝖾𝗑𝗉𝗂𝗋é 𝗈𝗎 𝖺 é𝗍é ré𝗏𝗈𝗊𝗎é, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝗈𝖻𝗍𝖾𝗇𝗂𝗋 𝗎𝗇 𝗇𝗈𝗎𝗏𝖾𝖺𝗎 𝗃𝖾𝗍𝗈𝗇 𝗌𝗎𝗋 https://developers.google.com/oauthplayground/
+
+# bot/login/login.js
+login.currentlyLogged=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖾𝗇 𝖼𝗈𝗎𝗋𝗌
+login.notFoundDirAccount=𝖨𝗆𝗉𝗈𝗌𝗌𝗂𝖻𝗅𝖾 𝖽𝖾 𝗍𝗋𝗈𝗎𝗏𝖾𝗋 𝗅𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %1
+login.loginToken=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝗃𝖾𝗍𝗈𝗇 𝖽'𝖺𝖼𝖼è𝗌
+login.loginCookieString=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖼𝗁𝖺î𝗇𝖾 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾
+login.loginCookieNetscape=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖼𝗈𝗈𝗄𝗂𝖾 𝗇𝖾𝗍𝗌𝖼𝖺𝗉𝖾
+login.loginCookieArray=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝗍𝖺𝖻𝗅𝖾𝖺𝗎 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾𝗌
+login.loginPassword=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖾𝗆𝖺𝗂𝗅 𝖾𝗍 𝗆𝗈𝗍 𝖽𝖾 𝗉𝖺𝗌𝗌𝖾...
+login.accountError=𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗅𝖾 𝗃𝖾𝗍𝗈𝗇 𝖽𝖾 𝗉𝖾𝗋𝗆𝗂𝗌𝗌𝗂𝗈𝗇 𝖼𝗈𝗆𝗉𝗅è𝗍𝖾 𝗌𝗈𝗎𝗌 𝗅𝖺 𝖿𝗈𝗋𝗆𝖾 %1 𝗈𝗎 𝗎𝗇 𝖼𝗈𝗈𝗄𝗂𝖾 𝗌𝗈𝗎𝗌 𝖿𝗈𝗋𝗆𝖾 𝖽𝖾 𝖼𝗁𝖺î𝗇𝖾 %2 𝗈𝗎 𝗎𝗇 𝖼𝗈𝗈𝗄𝗂𝖾 𝗌𝗈𝗎𝗌 𝖿𝗈𝗋𝗆𝖾 𝖽𝖾 𝗍𝖺𝖻𝗅𝖾𝖺𝗎 :\n[\n  { 𝗇𝖺𝗆𝖾: %3, 𝗏𝖺𝗅𝗎𝖾: %4 },\n  { 𝗇𝖺𝗆𝖾: %5, 𝗏𝖺𝗅𝗎𝖾: %6 }\n]\n 𝗈𝗎\n[\n  { 𝗄𝖾𝗒: %3, 𝗏𝖺𝗅𝗎𝖾: %4 },\n  { 𝗄𝖾𝗒: %5, 𝗏𝖺𝗅𝗎𝖾: %6 }\n]\n𝖽𝖺𝗇𝗌 𝗅𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %7
+login.cannotFindAccount=𝖨𝗆𝗉𝗈𝗌𝗌𝗂𝖻𝗅𝖾 𝖽𝖾 𝗍𝗋𝗈𝗎𝗏𝖾𝗋 𝗅𝖾 𝖼𝗈𝗆𝗉𝗍𝖾 𝖥𝖺𝖼𝖾𝖻𝗈𝗈𝗄, 𝖼𝗁𝗈𝗂𝗌𝗂𝗌𝗌𝖾𝗓 𝗅'𝗎𝗇𝖾 𝖽𝖾𝗌 𝗈𝗉𝗍𝗂𝗈𝗇𝗌 𝗌𝗎𝗂𝗏𝖺𝗇𝗍𝖾𝗌 (𝖾𝗇𝗍𝗋𝖾𝗓 𝗅𝖾 𝗇𝗎𝗆é𝗋𝗈 𝗉𝗈𝗎𝗋 𝖼𝗁𝗈𝗂𝗌𝗂𝗋 𝗈𝗎 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗓 𝗅𝖾𝗌 𝖿𝗅è𝖼𝗁𝖾𝗌 𝗁𝖺𝗎𝗍/𝖻𝖺𝗌 𝖾𝗍 𝖤𝗇𝗍𝗋é𝖾 𝗉𝗈𝗎𝗋 𝖼𝗈𝗇𝖿𝗂𝗋𝗆𝖾𝗋) :
+login.chooseAccount=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖾𝗆𝖺𝗂𝗅 𝖾𝗍 𝗆𝗈𝗍 𝖽𝖾 𝗉𝖺𝗌𝗌𝖾
+login.chooseToken=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝗃𝖾𝗍𝗈𝗇 𝖽𝖾 𝗉𝖾𝗋𝗆𝗂𝗌𝗌𝗂𝗈𝗇 𝖼𝗈𝗆𝗉𝗅è𝗍𝖾
+login.chooseCookieString=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖼𝗁𝖺î𝗇𝖾 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾
+login.chooseCookieArray=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝗍𝖺𝖻𝗅𝖾𝖺𝗎 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾𝗌
+login.loginWith=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 𝖼𝗁𝗈𝗂𝗌𝗂 𝖽𝖾 %1
+login.inputEmail=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝖾𝗆𝖺𝗂𝗅 (𝗂𝖽𝖾𝗇𝗍𝗂𝖿𝗂𝖺𝗇𝗍) 𝗈𝗎 𝗇𝗎𝗆é𝗋𝗈 𝖽𝖾 té𝗅é𝗉𝗁𝗈𝗇𝖾 𝖽𝗎 𝖼𝗈𝗆𝗉𝗍𝖾 𝖥𝖺𝖼𝖾𝖻𝗈𝗈𝗄 :
+login.inputPassword=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝗆𝗈𝗍 𝖽𝖾 𝗉𝖺𝗌𝗌𝖾 :
+login.input2FA=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗅𝖾 𝖼𝗈𝖽𝖾 𝟤𝖥𝖠 (𝗅𝖺𝗂𝗌𝗌𝖾𝗓 𝗏𝗂𝖽𝖾 𝗌𝗂 𝗏𝗈𝗎𝗌 𝗇'𝖺𝗏𝖾𝗓 𝗉𝖺𝗌 𝖺𝖼𝗍𝗂𝗏é 𝗅𝖺 𝟤𝖥𝖠) :
+login.inputToken=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝗃𝖾𝗍𝗈𝗇 𝖽𝖾 𝗉𝖾𝗋𝗆𝗂𝗌𝗌𝗂𝗈𝗇 𝖼𝗈𝗆𝗉𝗅è𝗍𝖾 (𝖼𝗈𝗆𝗆𝖾𝗇𝖼𝖺𝗇𝗍 𝗉𝖺𝗋 𝖤𝖠𝖠𝖠𝖠) :
+login.inputCookieString=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝖼𝗁𝖺î𝗇𝖾 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾 :
+login.inputCookieArray=> 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝗍𝖺𝖻𝗅𝖾𝖺𝗎 𝖽𝖾 𝖼𝗈𝗈𝗄𝗂𝖾𝗌 :
+login.refreshCookie=𝖠𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖼𝗈𝗈𝗄𝗂𝖾...
+login.refreshCookieError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖼𝗈𝗈𝗄𝗂𝖾
+login.refreshCookieSuccess=𝖢𝗈𝗈𝗄𝗂𝖾 𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌é 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌, 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋𝖾𝗓 𝗅𝖾 𝖻𝗈𝗍 𝗉𝗈𝗎𝗋 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝗇𝗈𝗎𝗏𝖾𝖺𝗎 𝖼𝗈𝗈𝗄𝗂𝖾
+login.refreshCookieWarning=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 𝖺𝖼𝗍𝗂𝗏é 𝗅𝖾 𝗆𝗈𝖽𝖾 𝖽'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖺𝗎𝗍𝗈𝗆𝖺𝗍𝗂𝗊𝗎𝖾 𝖽𝗎 𝖼𝗈𝗈𝗄𝗂𝖾, 𝗆𝖺𝗂𝗌 𝗏𝗈𝗎𝗌 𝗇'𝖺𝗏𝖾𝗓 𝗉𝖺𝗌 𝖼𝗈𝗇𝖿𝗂𝗀𝗎𝗋é 𝖽'𝖾𝗆𝖺𝗂𝗅 𝖾𝗍 𝖽𝖾 𝗆𝗈𝗍 𝖽𝖾 𝗉𝖺𝗌𝗌𝖾 𝖽𝖺𝗇𝗌 𝗅𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 𝖼𝗈𝗇𝖿𝗂𝗀.𝗃𝗌𝗈𝗇
+login.tokenError=𝖫𝖾 𝗃𝖾𝗍𝗈𝗇 𝖾𝗌𝗍 𝗂𝗇𝗏𝖺𝗅𝗂𝖽𝖾 𝗈𝗎 𝖺 𝖾𝗑𝗉𝗂𝗋é. 𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗅𝖾 𝗃𝖾𝗍𝗈𝗇 𝖽𝖾 𝗉𝖾𝗋𝗆𝗂𝗌𝗌𝗂𝗈𝗇 𝖼𝗈𝗆𝗉𝗅è𝗍𝖾 𝗌𝗈𝗎𝗌 𝗅𝖺 𝖿𝗈𝗋𝗆𝖾 %1 𝖽𝖺𝗇𝗌 𝗅𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %2
+login.cookieError=𝖢𝗈𝗈𝗄𝗂𝖾 𝗂𝗇𝗏𝖺𝗅𝗂𝖽𝖾 𝗈𝗎 𝖾𝗑𝗉𝗂𝗋é.
+login.loginPasswordError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗏𝖾𝖼 𝖾𝗆𝖺𝗂𝗅 𝖾𝗍 𝗆𝗈𝗍 𝖽𝖾 𝗉𝖺𝗌𝗌𝖾 𝖽𝖺𝗇𝗌 𝖼𝗈𝗇𝖿𝗂𝗀.𝗃𝗌𝗈𝗇
+login.loginSuccess=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 ré𝗎𝗌𝗌𝗂𝖾
+login.loginError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇
+login.openDashboardSuccess=𝖯𝖺𝗀𝖾 𝖽'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖻𝗈𝗍 𝗈𝗎𝗏𝖾𝗋𝗍𝖾 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌
+login.openDashboardError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝗈𝗎𝗏𝖾𝗋𝗍𝗎𝗋𝖾 𝖽𝖾 𝗅𝖺 𝗉𝖺𝗀𝖾 𝖽'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖻𝗈𝗍
+login.changeGbanData=𝖫𝖤𝖲 𝖣𝖮𝖭𝖭𝖤́𝖤𝖲 𝖮𝖭𝖳 𝖤́𝖳𝖤́ 𝖬𝖮𝖣𝖨𝖥𝖨𝖤́𝖤𝖲, 𝖨𝖫 𝖤𝖲𝖳 𝖠𝖢𝖳𝖴𝖤𝖫𝖫𝖤𝖬𝖤𝖭𝖳 𝖨𝖬𝖯𝖮𝖲𝖲𝖨𝖡𝖫𝖤 𝖣𝖤 𝖫𝖠𝖭𝖢𝖤𝖱 𝖫𝖤 𝖡𝖮𝖳
+login.errorNoti=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 ré𝖼𝗎𝗉é𝗋𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝗆𝖾𝗌𝗌𝖺𝗀𝖾
+login.refreshFbstateSuccess=𝖥𝗂𝖼𝗁𝗂𝖾𝗋 %1 𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌é 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌
+login.refreshFbstateError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %1
+login.youAreBanned=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝗎 𝗉𝗋𝗈𝗃𝖾𝗍 𝖦𝗈𝖺𝗍-𝖡𝗈𝗍
+login.runBot=𝖫𝖺𝗇𝖼𝖾𝗆𝖾𝗇𝗍 𝖽𝗎 𝖻𝗈𝗍 ré𝗎𝗌𝗌𝗂, 𝖽é𝖻𝗎𝗍 𝖽𝖾 𝗅𝖺 ré𝖼𝖾𝗉𝗍𝗂𝗈𝗇 𝖽𝖾𝗌 𝗆𝖾𝗌𝗌𝖺𝗀𝖾𝗌 𝖽𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌
+login.notLoggedIn=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 vé𝗋𝗂𝖿𝗂𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝖼𝗈𝗆𝗉𝗍𝖾 𝖥𝖺𝖼𝖾𝖻𝗈𝗈𝗄
+login.callBackError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝗎 𝗋𝖺𝗉𝗉𝖾𝗅 𝗅𝗂𝗌𝗍𝖾𝗇𝖬𝗊𝗍𝗍
+login.userBanned=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝖾 𝗅'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖻𝗈𝗍 !!
+login.checkGbanError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 vé𝗋𝗂𝖿𝗂𝖼𝖺𝗍𝗂𝗈𝗇 𝖦𝖡𝖠𝖭, 𝖾𝗌𝗌𝖺𝗒𝖾𝗓 𝖽𝖾 𝗆𝖾𝗍𝗍𝗋𝖾 à 𝗃𝗈𝗎𝗋 𝗅𝖺 𝗌𝗈𝗎𝗋𝖼𝖾 𝗏𝖾𝗋𝗌 𝗅𝖺 𝖽𝖾𝗋𝗇𝗂è𝗋𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 (𝗈𝗎𝗏𝗋𝖾𝗓 𝗅𝖾 𝖼𝗆𝖽 𝖾𝗍 𝗍𝖺𝗉𝖾𝗓 : 𝗇𝗈𝖽𝖾 𝗎𝗉𝖽𝖺𝗍𝖾)
+login.gbanMessage=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝗎 𝗉𝗋𝗈𝗃𝖾𝗍 𝖦𝗈𝖺𝗍-𝖡𝗈𝗍 𝗅𝖾 %1 𝗉𝗈𝗎𝗋 𝗅𝖺 𝗋𝖺𝗂𝗌𝗈𝗇 : %2\n» 𝖧𝖾𝗎𝗋𝖾 : %3
+login.gbanMessageToDate=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝗎 𝗉𝗋𝗈𝗃𝖾𝗍 𝖦𝗈𝖺𝗍-𝖡𝗈𝗍 𝗅𝖾 %1 𝗉𝗈𝗎𝗋 𝗅𝖺 𝗋𝖺𝗂𝗌𝗈𝗇 : %2\n» 𝖧𝖾𝗎𝗋𝖾 : %3\n» 𝖩𝗎𝗌𝗊𝗎'𝖺𝗎 : %4
+login.gbanAdminMessage=𝖫'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋 %1 𝖺 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝗎 𝗉𝗋𝗈𝗃𝖾𝗍 𝖦𝗈𝖺𝗍-𝖡𝗈𝗍 𝗅𝖾 %2 𝗉𝗈𝗎𝗋 𝗅𝖺 𝗋𝖺𝗂𝗌𝗈𝗇 : %3
+login.openServerUptimeSuccess=🚀 𝖲𝖾𝗋𝗏𝖾𝗎𝗋 𝖽𝖾 𝖽𝗂𝗌𝗉𝗈𝗇𝗂𝖻𝗂𝗅𝗂𝗍é 𝗈𝗎𝗏𝖾𝗋𝗍 : %1
+login.openServerUptimeError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾, 𝗂𝗆𝗉𝗈𝗌𝗌𝗂𝖻𝗅𝖾 𝖽'𝗈𝗎𝗏𝗋𝗂𝗋 𝗅𝖾 𝗌𝖾𝗋𝗏𝖾𝗎𝗋 𝖽𝖾 𝖽𝗂𝗌𝗉𝗈𝗇𝗂𝖻𝗂𝗅𝗂𝗍é
+login.restartListenMessage=𝖱𝖾𝖽é𝗆𝖺𝗋𝗋𝖺𝗀𝖾 𝖽𝖾 𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳 𝖺𝖼𝗍𝗂𝗏é 𝗍𝗈𝗎𝗍𝖾𝗌 𝗅𝖾𝗌 %1
+login.stopRestartListenMessage=𝖱𝖾𝖽é𝗆𝖺𝗋𝗋𝖺𝗀𝖾 𝖽𝖾 𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳 𝖽és𝖺𝖼𝗍𝗂𝗏é
+login.restartListenMessageError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝗎 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋𝖺𝗀𝖾 𝖽𝖾 𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳
+login.restartListenMessage2=𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋é 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌
+login.refreshCookieAfter=𝖠𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖼𝗈𝗈𝗄𝗂𝖾 𝖺𝗉𝗋è𝗌 %1
+login.listenMqttClose=𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳 𝖿𝖾𝗋𝗆é
+login.listenMqttCloseByUser=𝖫𝗂𝗌𝗍𝖾𝗇𝖬𝖰𝖳𝖳 𝖿𝖾𝗋𝗆é 𝗉𝖺𝗋 𝗅'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋
+login.retryCheckLiveCookie=𝖭𝗈𝗎𝗏𝖾𝗅𝗅𝖾 𝗍𝖾𝗇𝗍𝖺𝗍𝗂𝗏𝖾 𝖽𝖾 vé𝗋𝗂𝖿𝗂𝖼𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖼𝗈𝗈𝗄𝗂𝖾... %1
+login.startBotSuccess=𝖫𝖾 𝖻𝗈𝗍 𝖺 𝖽é𝗆𝖺𝗋𝗋é 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌, ré𝖼𝖾𝗉𝗍𝗂𝗈𝗇 𝖽𝖾𝗌 𝗆𝖾𝗌𝗌𝖺𝗀𝖾𝗌 𝖽𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌
+
+version.tooOldVersion=𝖵𝗈𝗎𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗓 𝗎𝗇𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 𝗍𝗋𝗈𝗉 𝖺𝗇𝖼𝗂𝖾𝗇𝗇𝖾 𝖽𝖾 𝖦𝗈𝖺𝗍-𝖡𝗈𝗍, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝗆𝖾𝗍𝗍𝗋𝖾 à 𝗃𝗈𝗎𝗋 𝗏𝖾𝗋𝗌 𝗅𝖺 𝖽𝖾𝗋𝗇𝗂è𝗋𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 𝖾𝗇 𝗍𝖺𝗉𝖺𝗇𝗍 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 : %1 𝖽𝖺𝗇𝗌 𝗅𝖾 𝖼𝗆𝖽/𝖼𝗈𝗇𝗌𝗈𝗅𝖾/𝗍𝖾𝗋𝗆𝗂𝗇𝖺𝗅/𝗌𝗁𝖾𝗅𝗅
+
+# bot/custom.js
+custom.refreshedFb_dtsg=𝖿𝖻_𝖽𝗍𝗌𝗀 𝖾𝗍 𝗃𝖺𝗓𝗈𝖾𝗌𝗍 𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌é𝗌 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌
+custom.refreshedFb_dtsgError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝖾 𝖿𝖻_𝖽𝗍𝗌𝗀 𝖾𝗍 𝗃𝖺𝗓𝗈𝖾𝗌𝗍
+
+# bot/login/loadData.js
+loadData.loadThreadDataSuccess=𝖣𝗈𝗇𝗇é𝖾𝗌 𝖽𝖾 %1 𝗀𝗋𝗈𝗎𝗉𝖾𝗌 𝖼𝗁𝖺𝗋𝗀é𝖾𝗌 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌 !
+loadData.loadUserDataSuccess=𝖣𝗈𝗇𝗇é𝖾𝗌 𝖽𝖾 %1 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖼𝗁𝖺𝗋𝗀é𝖾𝗌 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌 !
+loadData.refreshingThreadData=𝖬𝗂𝗌𝖾 à 𝗃𝗈𝗎𝗋 𝖽𝖾𝗌 𝗂𝗇𝖿𝗈𝗋𝗆𝖺𝗍𝗂𝗈𝗇𝗌 𝖽𝖾𝗌 𝗀𝗋𝗈𝗎𝗉𝖾𝗌...
+loadData.refreshThreadDataSuccess=𝖨𝗇𝖿𝗈𝗋𝗆𝖺𝗍𝗂𝗈𝗇𝗌 𝖽𝖾 %1 𝗀𝗋𝗈𝗎𝗉𝖾 𝗆𝗂𝗌𝖾𝗌 à 𝗃𝗈𝗎𝗋 !
+loadData.refreshThreadDataError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝗆𝗂𝗌𝖾 à 𝗃𝗈𝗎𝗋 𝖽𝖾𝗌 𝗀𝗋𝗈𝗎𝗉𝖾𝗌 !
+
+# bot/login/loadScripts.js
+loadScripts.loadScriptsError=𝖫𝖾𝗌 𝖿𝗂𝖼𝗁𝗂𝖾𝗋𝗌 %1 𝗈𝗇𝗍 𝗎𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝗅𝗈𝗋𝗌 𝖽𝗎 𝖼𝗁𝖺𝗋𝗀𝖾𝗆𝖾𝗇𝗍 :
+loadScripts.loadScriptsNotMatchOrigin=𝖫𝖾𝗌 𝖿𝗂𝖼𝗁𝗂𝖾𝗋𝗌 %1 𝗇𝖾 𝖼𝗈𝗋𝗋𝖾𝗌𝗉𝗈𝗇𝖽𝖾𝗇𝗍 𝗉𝖺𝗌 𝖺𝗎𝗑 𝖿𝗂𝖼𝗁𝗂𝖾𝗋𝗌 𝗈𝗋𝗂𝗀𝗂𝗇𝖺𝗎𝗑 𝖽𝗎 𝗉𝗋𝗈𝗃𝖾𝗍 𝗀𝗂𝗍𝗁𝗎𝖻, 𝖺𝗌𝗌𝗎𝗋𝖾𝗓-𝗏𝗈𝗎𝗌 𝗊𝗎𝖾 𝖼𝖾𝗌 𝖿𝗂𝖼𝗁𝗂𝖾𝗋𝗌 𝖽𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾𝗌 𝗌𝗈𝗇𝗍 𝖿𝗂𝖺𝖻𝗅𝖾𝗌 :
+loadScripts.NOT_FOUND=𝖭𝖮𝖭 𝖳𝖱𝖮𝖴𝖵𝖤́ 𝖣𝖠𝖭𝖲 𝖫𝖤 𝖢𝖮𝖣𝖤 𝖲𝖮𝖴𝖱𝖢𝖤 𝖮𝖱𝖨𝖦𝖨𝖭𝖠𝖫 :
+loadScripts.NOT_MATCH=𝖭𝖤 𝖢𝖮𝖱𝖱𝖤𝖲𝖯𝖮𝖭𝖣 𝖯𝖠𝖲 𝖠𝖴 𝖢𝖮𝖣𝖤 𝖲𝖮𝖴𝖱𝖢𝖤 𝖮𝖱𝖨𝖦𝖨𝖭𝖠𝖫 :
+
+# bot/login/socketIO.js
+socketIO.connected=𝖢𝗈𝗇𝗇𝖾𝖼𝗍é 𝖺𝗎 𝗌𝖾𝗋𝗏𝖾𝗎𝗋 𝗌𝗈𝖼𝗄𝖾𝗍.𝗂𝗈
+socketIO.error=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 𝖺𝗎 𝗌𝖾𝗋𝗏𝖾𝗎𝗋 𝗌𝗈𝖼𝗄𝖾𝗍.𝗂𝗈
+
+# bot/handler/handlerCheckData.js
+handlerCheckData.cantCreateThread=𝖫𝖾 𝗀𝗋𝗈𝗎𝗉𝖾 𝖺𝗏𝖾𝖼 𝗅'𝗂𝖽 '%1' 𝗇𝖾 𝗉𝖾𝗎𝗍 𝗉𝖺𝗌 ê𝗍𝗋𝖾 é𝖼𝗋𝗂𝗍 𝖽𝖺𝗇𝗌 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 !
+handlerCheckData.cantCreateUser=𝖫'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋 𝖺𝗏𝖾𝖼 𝗅'𝗂𝖽 '%1' 𝗇𝖾 𝗉𝖾𝗎𝗍 𝗉𝖺𝗌 ê𝗍𝗋𝖾 é𝖼𝗋𝗂𝗍 𝖽𝖺𝗇𝗌 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 !
+
+# bot/handler/handlerEvents.js
+handlerEvents.userBanned=𝖵𝗈𝗎𝗌 𝖺𝗏𝖾𝗓 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝖾 𝗅'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖻𝗈𝗍\n» 𝖱𝖺𝗂𝗌𝗈𝗇 : %1\n» 𝖣𝖺𝗍𝖾 : %2\n» 𝖨𝖣 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋 : %3
+handlerEvents.threadBanned=𝖢𝖾 𝗀𝗋𝗈𝗎𝗉𝖾 𝖺 é𝗍é 𝖻𝖺𝗇𝗇𝗂 𝖽𝖾 𝗅'𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖽𝗎 𝖻𝗈𝗍\n» 𝖱𝖺𝗂𝗌𝗈𝗇 : %1\n» 𝖣𝖺𝗍𝖾 : %2\n» 𝖨𝖣 𝖽𝗎 𝗀𝗋𝗈𝗎𝗉𝖾 : %3
+handlerEvents.onlyAdminBox=𝖢𝖾 𝗀𝗋𝗈𝗎𝗉𝖾 𝖾𝗌𝗍 𝖺𝖼𝗍𝗎𝖾𝗅𝗅𝖾𝗆𝖾𝗇𝗍 𝖼𝗈𝗇𝖿𝗂𝗀𝗎𝗋é 𝗉𝗈𝗎𝗋 𝗊𝗎𝖾 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋𝗌 𝖽𝗎 𝗀𝗋𝗈𝗎𝗉𝖾 𝗉𝗎𝗂𝗌𝗌𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍
+handlerEvents.onlyAdminBot=❌ | 𝖠𝖼𝗍𝗎𝖾𝗅𝗅𝖾𝗆𝖾𝗇𝗍, 𝗌𝖾𝗎𝗅 𝗅'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍
+
+# Command not found – %1 = command name, %2 = prefix
+handlerEvents.commandNotFound=𝖫𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%1" 𝖾𝗌𝗍 𝗂𝗇𝗍𝗋𝗈𝗎𝗏𝖺𝖻𝗅𝖾, 𝗍𝖺𝗉𝖾 %2𝗁𝖾𝗅𝗉 𝗉𝗈𝗎𝗋 𝗏𝗈𝗂𝗋 𝗍𝗈𝗎𝗌 𝗅𝖾𝗌 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾𝗌 𝖽𝗂𝗌𝗉𝗈𝗇𝗂𝖻𝗅𝖾𝗌
+handlerEvents.commandNotFound2=𝖫𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 𝗊𝗎𝖾 𝗍𝗎 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗌 𝖾𝗌𝗍 𝗂𝗇𝗍𝗋𝗈𝗎𝗏𝖺𝖻𝗅𝖾, 𝗍𝖺𝗉𝖾 %1𝗁𝖾𝗅𝗉 𝗉𝗈𝗎𝗋 𝗏𝗈𝗂𝗋 𝗍𝗈𝗎𝗌 𝗅𝖾𝗌 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾𝗌 𝖽𝗂𝗌𝗉𝗈𝗇𝗂𝖻𝗅𝖾𝗌
+handlerEvents.commandSyntaxError=𝖫𝖺 𝗌𝗒𝗇𝗍𝖺𝗑𝖾 𝖽𝖾 𝖼𝖾𝗍𝗍𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 𝖾𝗌𝗍 𝗂𝗇𝖼𝗈𝗋𝗋𝖾𝖼𝗍𝖾, 𝗍𝖺𝗉𝖾 %1𝗁𝖾𝗅𝗉 %2 𝗉𝗈𝗎𝗋 𝗏𝗈𝗂𝗋 𝗅𝖺 𝖿𝖺ç𝗈𝗇 𝖽𝖾 𝗅'𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋
+
+# Permission messages with %1 = user name, %2 = command name
+handlerEvents.onlyAdmin=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋𝗌 𝖽𝗎 𝗀𝗋𝗈𝗎𝗉𝖾 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyAdminToUseOnReply=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋𝗌 𝖽𝗎 𝗀𝗋𝗈𝗎𝗉𝖾 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyAdminToUseOnReaction=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋𝗌 𝖽𝗎 𝗀𝗋𝗈𝗎𝗉𝖾 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.onlyVipUser=💎 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖵𝖨𝖯 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyVipUserToUseOnReply=💎 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖵𝖨𝖯 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyVipUserToUseOnReaction=💎 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖵𝖨𝖯 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.onlyPremium=⭐ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖯𝗋𝖾𝗆𝗂𝗎𝗆 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyPremiumToUseOnReply=⭐ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖯𝗋𝖾𝗆𝗂𝗎𝗆 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyPremiumToUseOnReaction=⭐ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖯𝗋𝖾𝗆𝗂𝗎𝗆 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.onlyAdminBot2=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyAdminBot2ToUseOnReply=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyAdminBot2ToUseOnReaction=❌ | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅'𝖺𝖽𝗆𝗂𝗇𝗂𝗌𝗍𝗋𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.onlyDeveloper=💻 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖽é𝗏𝖾𝗅𝗈𝗉𝗉𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyDeveloperToUseOnReply=💻 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖽é𝗏𝖾𝗅𝗈𝗉𝗉𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyDeveloperToUseOnReaction=💻 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖽é𝗏𝖾𝗅𝗈𝗉𝗉𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.onlyCreator=👑 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖢𝗋é𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"
+handlerEvents.onlyCreatorToUseOnReply=👑 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖢𝗋é𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝗉𝗈𝗇𝗌𝖾 𝖽𝖾 "%2"
+handlerEvents.onlyCreatorToUseOnReaction=👑 | 𝖧𝖾𝗒 %1, 𝗌𝖾𝗎𝗅 𝗅𝖾 𝖢𝗋é𝖺𝗍𝖾𝗎𝗋 𝖽𝗎 𝖻𝗈𝗍 𝗉𝖾𝗎𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 ré𝖺𝖼𝗍𝗂𝗈𝗇 𝖽𝖾 "%2"
+
+handlerEvents.waitingForCommand=⏱ 𝖳𝗎 𝖽𝗈𝗂𝗌 𝖺𝗍𝗍𝖾𝗇𝖽𝗋𝖾 𝖺𝗏𝖺𝗇𝗍 𝖽𝖾 𝗉𝗈𝗎𝗏𝗈𝗂𝗋 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝖼𝖾𝗍𝗍𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾, 𝗋𝖾𝗏𝗂𝖾𝗇𝗌 𝖽𝖺𝗇𝗌 %1𝗌
+handlerEvents.errorOccurred=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗌𝗎𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%2"\n\n%3
+handlerEvents.errorOccurred2=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗌𝗎𝗋 𝗅𝖺 𝖿𝗈𝗇𝖼𝗍𝗂𝗈𝗇 𝗈𝗇ℂ𝗁𝖺𝗍 𝖽𝖾 "%2"\n\n%3
+handlerEvents.errorOccurred3=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖾𝗑é𝖼𝗎𝗍𝗂𝗈𝗇 𝖽𝖾 𝗈𝗇ℝ𝖾𝗉𝗅𝗒 𝗉𝗈𝗎𝗋 "%2"\n\n%3
+handlerEvents.errorOccurred4=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖾𝗑é𝖼𝗎𝗍𝗂𝗈𝗇 𝖽𝖾 𝗈𝗇ℝ𝖾𝖺𝖼𝗍𝗂𝗈𝗇 𝗉𝗈𝗎𝗋 "%2"\n\n%3
+handlerEvents.errorOccurred5=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖾𝗑é𝖼𝗎𝗍𝗂𝗈𝗇 𝖽𝖾 𝗈𝗇𝔼𝗏𝖾𝗇𝗍 𝗉𝗈𝗎𝗋 "%2"\n\n%3
+handlerEvents.errorOccurred6=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖾𝗑é𝖼𝗎𝗍𝗂𝗈𝗇 𝖽𝖾 𝗈𝗇𝔼𝗏𝖾𝗇𝗍 𝗉𝗈𝗎𝗋 "%2"\n\n%3
+handlerEvents.errorOccurred7=❌ [ %1 ]\n𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅'𝖾𝗑é𝖼𝗎𝗍𝗂𝗈𝗇 𝖽𝖾 𝗈𝗇𝔸𝗇𝗒𝔼𝗏𝖾𝗇𝗍 𝗉𝗈𝗎𝗋 "%2"\n\n%3
+handlerEvents.cannotFindCommandName=❌ 𝖨𝗆𝗉𝗈𝗌𝗌𝗂𝖻𝗅𝖾 𝖽𝖾 𝗍𝗋𝗈𝗎𝗏𝖾𝗋 𝗅𝖾 𝗇𝗈𝗆 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 𝗉𝗈𝗎𝗋 𝖾𝗑é𝖼𝗎𝗍𝖾𝗋 𝖼𝖾𝗍𝗍𝖾 ré𝗉𝗈𝗇𝗌𝖾 !
+handlerEvents.cannotFindCommand=❌ 𝖨𝗆𝗉𝗈𝗌𝗌𝗂𝖻𝗅𝖾 𝖽𝖾 𝗍𝗋𝗈𝗎𝗏𝖾𝗋 𝗅𝖺 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾 "%1" 𝗉𝗈𝗎𝗋 𝖾𝗑é𝖼𝗎𝗍𝖾𝗋 𝖼𝖾𝗍𝗍𝖾 ré𝗉𝗈𝗇𝗌𝖾 !
+
+# Prefix only response – %1 = user name, %2 = prefix
+handlerEvents.prefixOnly=𝖧𝖾𝗒 %1, 𝗍𝗎 𝗏𝗂𝖾𝗇𝗌 𝖽𝖾 𝗍𝖺𝗉𝖾𝗋 𝗅𝖾 𝗉𝗋é𝖿𝗂𝗑𝖾 𝗌𝖾𝗎𝗅 "%2" — 𝗆𝖺𝗂𝗌 𝗊𝗎𝖾 𝗏𝖾𝗎𝗑-𝗍𝗎 𝗊𝗎𝖾 𝗃𝖾 𝖿𝖺𝗌𝗌𝖾 ? 🤔 𝖤𝗌𝗌𝖺𝗂𝖾 %2𝗁𝖾𝗅𝗉 𝗉𝗈𝗎𝗋 𝗏𝗈𝗂𝗋 𝗍𝗈𝗎𝗌 𝗅𝖾𝗌 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝖾𝗌 𝖽𝗂𝗌𝗉𝗈𝗇𝗂𝖻𝗅𝖾𝗌 !
+
+# Global mode messages
+handlerEvents.onlyVipUserGlobal=💎 𝖲𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖵𝖨𝖯 𝖾𝗍 𝗉𝗅𝗎𝗌 𝗁𝖺𝗎𝗍 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍
+handlerEvents.onlyDeveloperGlobal=👑 𝖲𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝖽é𝗏𝖾𝗅𝗈𝗉𝗉𝖾𝗎𝗋𝗌 𝖾𝗍 𝗉𝗅𝗎𝗌 𝗁𝖺𝗎𝗍 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍
+handlerEvents.onlyPremiumGlobal=⭐ 𝖲𝖾𝗎𝗅𝗌 𝗅𝖾𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖺𝗍𝖾𝗎𝗋𝗌 𝖯𝗋𝖾𝗆𝗂𝗎𝗆 𝖾𝗍 𝗉𝗅𝗎𝗌 𝗁𝖺𝗎𝗍 𝗉𝖾𝗎𝗏𝖾𝗇𝗍 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖾 𝖻𝗈𝗍
+
+# bot/autoUptime.js
+autoUptime.autoUptimeTurnedOn=𝖬𝗈𝖽𝖾 𝖠𝗎𝗍𝗈𝖴𝗉𝗍𝗂𝗆𝖾 𝖺𝖼𝗍𝗂𝗏é
+
+# database/controller/index.js
+indexController.connectingMongoDB=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖬𝗈𝗇𝗀𝗈𝖣𝖡
+indexController.connectMongoDBSuccess=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖬𝗈𝗇𝗀𝗈𝖣𝖡 ré𝗎𝗌𝗌𝗂𝖾 !
+indexController.connectMongoDBError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖬𝗈𝗇𝗀𝗈𝖣𝖡 :
+indexController.connectingMySQL=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗎𝗇𝖾 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖲𝖰𝖫𝗂𝗍𝖾
+indexController.connectMySQLSuccess=𝖢𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗅𝖺 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖲𝖰𝖫𝗂𝗍𝖾 ré𝗎𝗌𝗌𝗂𝖾 !
+indexController.connectMySQLError=𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗇𝗇𝖾𝗑𝗂𝗈𝗇 à 𝗎𝗇𝖾 𝖻𝖺𝗌𝖾 𝖽𝖾 𝖽𝗈𝗇𝗇é𝖾𝗌 𝖲𝖰𝖫𝗂𝗍𝖾 :
+
+# updater.js
+updater.updateTooFast=𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖺𝗍𝗍𝖾𝗇𝖽𝗋𝖾 𝖺𝗎 𝗆𝗈𝗂𝗇𝗌 𝟧 𝗆𝗂𝗇𝗎𝗍𝖾𝗌 𝖺𝗉𝗋è𝗌 𝗅𝖾 𝖽𝖾𝗋𝗇𝗂𝖾𝗋 𝖼𝗈𝗆𝗆𝗂𝗍 𝗉𝗈𝗎𝗋 𝗆𝖾𝗍𝗍𝗋𝖾 à 𝗃𝗈𝗎𝗋 𝗌𝖺𝗇𝗌 𝖾𝗋𝗋𝖾𝗎𝗋, %1 𝗆𝗂𝗇𝗎𝗍𝖾𝗌 %2 𝗌𝖾𝖼𝗈𝗇𝖽𝖾𝗌 𝗋𝖾𝗌𝗍𝖺𝗇𝗍𝖾𝗌
+updater.latestVersion=𝖵𝗈𝗎𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗓 𝗅𝖺 𝖽𝖾𝗋𝗇𝗂è𝗋𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇
+updater.cantFindVersion=𝖵𝗈𝗎𝗌 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗓 𝗎𝗇𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 𝗂𝗇𝖽é𝖿𝗂𝗇𝗂𝖾 (%1), 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 vé𝗋𝗂𝖿𝗂𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 𝗉𝖺𝖼𝗄𝖺𝗀𝖾.𝗃𝗌𝗈𝗇
+updater.newVersions=𝖨𝗅 𝗒 𝖺 %1 𝗇𝗈𝗎𝗏𝖾𝗅𝗅𝖾𝗌 𝗏𝖾𝗋𝗌𝗂𝗈𝗇𝗌 à 𝗆𝖾𝗍𝗍𝗋𝖾 à 𝗃𝗈𝗎𝗋, 𝗅𝖺𝗇𝖼𝖾𝗆𝖾𝗇𝗍 𝖽𝖾 𝗅𝖺 𝗆𝗂𝗌𝖾 à 𝗃𝗈𝗎𝗋...
+updater.updateSuccess=𝖬𝗂𝗌𝖾 à 𝗃𝗈𝗎𝗋 ré𝗎𝗌𝗌𝗂𝖾%1
+updater.configChanged=𝖫𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %1 𝖺 é𝗍é 𝗆𝗈𝖽𝗂𝖿𝗂é, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 vé𝗋𝗂𝖿𝗂𝖾𝗋 𝗏𝗈𝗍𝗋𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 𝖼𝗈𝗇𝖿𝗂𝗀.𝗃𝗌𝗈𝗇
+updater.installingPackages=𝖨𝗇𝗌𝗍𝖺𝗅𝗅𝖺𝗍𝗂𝗈𝗇 𝖽𝖾𝗌 𝖽é𝗉𝖾𝗇𝖽𝖺𝗇𝖼𝖾𝗌 𝗉𝗈𝗎𝗋 𝗅𝖾 𝖻𝗈𝗍...
+updater.installSuccess=𝖣é𝗉𝖾𝗇𝖽𝖺𝗇𝖼𝖾𝗌 𝗂𝗇𝗌𝗍𝖺𝗅𝗅é𝖾𝗌 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌, 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋𝖾𝗓 𝗅𝖾 𝖻𝗈𝗍 𝗉𝗈𝗎𝗋 𝗎𝗍𝗂𝗅𝗂𝗌𝖾𝗋 𝗅𝖺 𝗇𝗈𝗎𝗏𝖾𝗅𝗅𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇
+updater.backupSuccess=𝖲𝖺𝗎𝗏𝖾𝗀𝖺𝗋𝖽𝖾 ré𝗎𝗌𝗌𝗂𝖾 𝖽𝖾𝗌 𝖿𝗂𝖼𝗁𝗂𝖾𝗋𝗌 𝗆𝗈𝖽𝗂𝖿𝗂é𝗌, 𝖼𝗈𝗇𝗌𝗎𝗅𝗍𝖾𝗓 𝗅𝖾 𝖽𝗈𝗌𝗌𝗂𝖾𝗋 %1
+updater.restartToApply=. 𝖱𝖾𝖽é𝗆𝖺𝗋𝗋𝖾𝗓 𝗅𝖾 𝖻𝗈𝗍 𝗉𝗈𝗎𝗋 𝖺𝗉𝗉𝗅𝗂𝗊𝗎𝖾𝗋 𝗅𝖺 𝗇𝗈𝗎𝗏𝖾𝗅𝗅𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇
+updater.skipFile=𝖨𝗅 𝗒 𝖺 𝗎𝗇𝖾 𝗇𝗈𝗎𝗏𝖾𝗅𝗅𝖾 𝗏𝖾𝗋𝗌𝗂𝗈𝗇 𝖽𝗎 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 %1, 𝗆𝖺𝗂𝗌 𝗍𝗎 𝖺𝗌 𝗂𝗀𝗇𝗈𝗋é 𝖼𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋 𝗅𝗈𝗋𝗌 𝖽𝖾 𝗅𝖺 𝗆𝗂𝗌𝖾 à 𝗃𝗈𝗎𝗋 𝖺𝗏𝖾𝖼 𝗅𝖾 𝖼𝗈𝗆𝗆𝖾𝗇𝗍𝖺𝗂𝗋𝖾 %2 𝖽𝖺𝗇𝗌 𝖼𝖾 𝖿𝗂𝖼𝗁𝗂𝖾𝗋
+
+# dashboard/routes/verifyfbid.js
+verifyfbid.sendCode=𝖵𝗈𝗍𝗋𝖾 𝖼𝗈𝖽𝖾 𝖽𝖾 vé𝗋𝗂𝖿𝗂𝖼𝖺𝗍𝗂𝗈𝗇 𝖾𝗌𝗍 :\n%1\n𝖫𝖾 𝖼𝗈𝖽𝖾 𝖾𝗌𝗍 𝗏𝖺𝗅𝖺𝖻𝗅𝖾 𝗉𝖾𝗇𝖽𝖺𝗇𝗍 %2 𝗆𝗂𝗇𝗎𝗍𝖾𝗌
+
+# utils.js
+utils.errorOccurred=❌ 𝖴𝗇𝖾 𝖾𝗋𝗋𝖾𝗎𝗋 𝖾𝗌𝗍 𝗌𝗎𝗋𝗏𝖾𝗇𝗎𝖾 :\n\n%1
+
+# for command
+command.restartedBot=𝖫𝖾 𝖻𝗈𝗍 𝖺 𝗋𝖾𝖽é𝗆𝖺𝗋𝗋é
+
+# dashboard/app.js
+app.googleApiRefreshTokenExpired=𝖫𝖾 𝗃𝖾𝗍𝗈𝗇 𝖽'𝖺𝖼𝗍𝗎𝖺𝗅𝗂𝗌𝖺𝗍𝗂𝗈𝗇 𝖦𝗈𝗈𝗀𝗅𝖾 𝖠𝖯𝖨 𝖺 𝖾𝗑𝗉𝗂𝗋é 𝗈𝗎 𝖺 é𝗍é ré𝗏𝗈𝗊𝗎é, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝗈𝖻𝗍𝖾𝗇𝗂𝗋 𝗎𝗇 𝗇𝗈𝗎𝗏𝖾𝖺𝗎 𝗃𝖾𝗍𝗈𝗇 𝗌𝗎𝗋 https://developers.google.com/oauthplayground/
+app.tooManyRequests=𝖳𝗋𝗈𝗉 𝖽𝖾 𝗋𝖾𝗊𝗎ê𝗍𝖾𝗌 𝖽𝖺𝗇𝗌 𝗅𝖺 𝖽𝖾𝗋𝗇𝗂è𝗋𝖾 𝗆𝗂𝗇𝗎𝗍𝖾. 𝖱é𝖾𝗌𝗌𝖺𝗒𝖾 𝗉𝗅𝗎𝗌 𝗍𝖺𝗋𝖽.
+app.notPermissionChangeFbstate=𝖳𝗎 𝗇'𝖺𝗌 𝗉𝖺𝗌 𝗅𝖺 𝗉𝖾𝗋𝗆𝗂𝗌𝗌𝗂𝗈𝗇 𝖽𝖾 𝗆𝗈𝖽𝗂𝖿𝗂𝖾𝗋 𝗅𝖾 𝖿𝖻𝗌𝗍𝖺𝗍𝖾 !
+app.notFoundFbstate=𝖵𝖾𝗎𝗂𝗅𝗅𝖾𝗓 𝖾𝗇𝗍𝗋𝖾𝗋 𝗎𝗇 𝖿𝖻𝗌𝗍𝖺𝗍𝖾 !
+app.changedFbstateSuccess=𝖥𝖻𝗌𝗍𝖺𝗍𝖾 𝗆𝗈𝖽𝗂𝖿𝗂é 𝖺𝗏𝖾𝖼 𝗌𝗎𝖼𝖼è𝗌 !
+app.serverError=𝖤𝗋𝗋𝖾𝗎𝗋 𝖽𝗎 𝗌𝖾𝗋𝗏𝖾𝗎𝗋, 𝗏𝖾𝗎𝗂𝗅𝗅𝖾𝗓 ré𝖾𝗌𝗌𝖺𝗒𝖾𝗋 𝗉𝗅𝗎𝗌 𝗍𝖺𝗋𝖽.

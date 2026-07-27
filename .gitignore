@@ -1,32 +1,30 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
-*.local
+fb-chat-api.dev
+obfcode.js
+minify.js
+backupOrigin.js
+createVersion.js
+createVersionAndCommit.js
+checkOriginCodeChanged.js
+*.zip
+*.dev.*
+!account.dev.txt
+!config.dev.json
+!configCommands.dev.json
+*.rar
+*test.*
+*.test.*
+test.js
 
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
+database/data/*
+!database/data/.gitkeep
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+scripts/cmds/tmp/*
+!scripts/cmds/tmp/.gitkeep
+scripts/cmds/assets/guide
+!scripts/cmds/assets/guide/.gitkeep
+
+scripts/events/tmp/*
+scripts/events/data/leaveAttachment
+scripts/events/data/welcomeAttachment
+!scripts/events/tmp/.gitkeepsessions/
