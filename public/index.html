@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autobot Deploy — Déploie plusieurs bots Messenger</title>
+    <meta name="description" content="Déploie et gère plusieurs bots Messenger en même temps : cookie, commandes, prefix et mot de passe personnel." />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>AUTOBOT<strong>DEPLOY</strong></span>
+      </div>
+      <div class="topbar-meta">
+        <span><i class="fa-solid fa-bolt"></i> <span id="ping">—</span></span>
+        <span><i class="fa-regular fa-clock"></i> <span id="time">—</span></span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Déploie <span class="grad">plusieurs bots</span> en même temps</h1>
+        <p>
+          Chaque compte tourne dans sa propre session isolée : connecter un nouveau cookie
+          ne déconnecte plus les bots déjà en ligne.
+        </p>
+        <div class="counter-card">
+          <div class="counter-value" id="onlineCount">0</div>
+          <div class="counter-label">bot(s) en ligne</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="subtitle"><i class="fa-solid fa-users-rays"></i> Bots connectés</h2>
+        <div id="botList" class="bot-grid">
+          <p class="empty">Aucun bot déployé pour le moment.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="subtitle"><i class="fa-solid fa-rocket"></i> Nouveau déploiement</h2>
+
+        <label class="field-label">Cookie / Appstate Facebook</label>
+        <textarea id="json-data" placeholder='Colle ici ton appstate (JSON)'></textarea>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Prefix</label>
+            <input id="inputOfPrefix" type="text" value="+" placeholder="+" />
+          </div>
+          <div>
+            <label class="field-label">UID admin</label>
+            <input id="inputOfAdmin" type="text" placeholder="1000xxxxxxxxx" />
+          </div>
+          <div>
+            <label class="field-label">Mot de passe (4 chiffres)</label>
+            <input id="inputOfPassword" type="password" inputmode="numeric" maxlength="4" placeholder="••••" />
+          </div>
+        </div>
+        <p class="hint">
+          <i class="fa-solid fa-lock"></i>
+          Ce code te sera demandé pour arrêter ou redéployer TON bot. Personne d'autre ne peut le couper.
+        </p>
+
+        <div class="cmd-block">
+          <div class="cmd-head">
+            <h3>Commandes</h3>
+            <button class="btn ghost" onclick="selectAllCommands()">Tout sélectionner</button>
+          </div>
+          <div id="listOfCommands" class="chips"></div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-head">
+            <h3>Events</h3>
+            <button class="btn ghost" onclick="selectAllEvents()">Tout sélectionner</button>
+          </div>
+          <div id="listOfCommandsEvent" class="chips"></div>
+        </div>
+
+        <label class="agree">
+          <input type="checkbox" id="agreeCheckbox" />
+          <span>J'utilise un compte secondaire et j'accepte les risques.</span>
+        </label>
+
+        <button id="submitButton" class="btn primary" disabled onclick="State()">
+          <i class="fa-solid fa-play"></i> Déployer le bot
+        </button>
+
+        <div id="result" class="result"></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="subtitle"><i class="fa-solid fa-terminal"></i> Logs</h2>
+        <select id="logSelect"></select>
+        <pre id="logs" class="logs">Sélectionne un bot pour voir ses logs.</pre>
+      </section>
+
+      <section class="panel contact">
+        <h2 class="subtitle"><i class="fa-solid fa-headset"></i> Me contacter</h2>
+        <p>Besoin d'aide pour déployer ton bot ? Écris-moi :</p>
+        <div class="contact-links">
+          <a class="contact-btn wa" href="https://wa.me/2250546841168" target="_blank" rel="noopener">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+          </a>
+          <a class="contact-btn tg" href="https://t.me/Christus225" target="_blank" rel="noopener">
+            <i class="fa-brands fa-telegram"></i> Telegram
+          </a>
+          <a class="contact-btn fb" href="https://www.facebook.com/profile.php?id=61590743674439" target="_blank" rel="noopener">
+            <i class="fa-brands fa-facebook"></i> Facebook
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>Autobot Deploy — multi-sessions · by Christus</footer>
+
+    <div id="stopModal" class="modal">
+      <div class="modal-card">
+        <h3>Arrêter ce bot</h3>
+        <p id="stopTarget"></p>
+        <input id="stopPassword" type="password" inputmode="numeric" maxlength="4" placeholder="Code à 4 chiffres" />
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeStopModal()">Annuler</button>
+          <button class="btn danger" onclick="confirmStop()">Arrêter</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
