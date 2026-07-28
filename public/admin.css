@@ -29,7 +29,8 @@ body.admin {
   overflow-x: hidden;
 }
 
-h1, h2, .brand strong, .stat-value { font-family: "Orbitron", "Sora", sans-serif; letter-spacing: .04em; }
+h1, h2, .brand strong { font-family: "Orbitron", "Sora", sans-serif; letter-spacing: .04em; }
+.stat-value { font-family: "Sora", sans-serif; letter-spacing: .02em; }
 
 .scanlines {
   position: fixed; inset: 0; pointer-events: none; z-index: 3; opacity: .12;
@@ -54,7 +55,7 @@ h1, h2, .brand strong, .stat-value { font-family: "Orbitron", "Sora", sans-serif
   box-shadow: 0 0 80px rgba(34, 167, 255, .22), inset 0 1px 0 rgba(255,255,255,.08);
   backdrop-filter: var(--glass);
 }
-.lock-logo { filter: drop-shadow(0 0 28px rgba(34, 167, 255, .7)); animation: float 4s ease-in-out infinite; }
+.lock-logo { filter: hue-rotate(160deg) saturate(1.5) drop-shadow(0 0 30px rgba(34, 167, 255, .8)); animation: float 4s ease-in-out infinite; }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 .lock-card h1 { font-size: 20px; margin: 14px 0 4px; }
 .lock-card h1 span {
@@ -83,7 +84,7 @@ h1, h2, .brand strong, .stat-value { font-family: "Orbitron", "Sora", sans-serif
   backdrop-filter: var(--glass);
 }
 .brand { display: flex; align-items: center; gap: 12px; }
-.brand img { filter: drop-shadow(0 0 14px rgba(34, 167, 255, .65)); }
+.brand img { filter: hue-rotate(160deg) saturate(1.5) drop-shadow(0 0 14px rgba(34, 167, 255, .75)); }
 .brand strong { display: block; font-size: 14px; }
 .brand span { color: var(--muted); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; }
 .top-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }

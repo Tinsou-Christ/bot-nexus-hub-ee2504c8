@@ -252,7 +252,7 @@ footer { position: relative; z-index: 1; text-align: center; color: var(--muted)
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
 
 /* ───────── logo + lien admin ───────── */
-.brand-logo { filter: drop-shadow(0 0 14px rgba(34, 167, 255, .7)); animation: float 5s ease-in-out infinite; }
+.brand-logo { filter: hue-rotate(160deg) saturate(1.5) drop-shadow(0 0 14px rgba(34, 167, 255, .8)); animation: float 5s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-5px); } }
 .admin-link {
   display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
@@ -278,7 +278,7 @@ footer { position: relative; z-index: 1; text-align: center; color: var(--muted)
 }
 .chat-box.open { display: flex; animation: rise .22s ease both; }
 .chat-box-head { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-bottom: 1px solid var(--border); }
-.chat-box-head img { border-radius: 50%; }
+.chat-box-head img { border-radius: 50%; filter: hue-rotate(160deg) saturate(1.5); }
 .chat-box-head strong { display: block; font-size: 13.5px; }
 .chat-box-head span { font-size: 11px; color: var(--muted); }
 .chat-box-head .icon-btn { margin-left: auto; }
