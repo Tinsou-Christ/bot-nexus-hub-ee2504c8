@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christus's Autobot — Console Admin</title>
+    <meta name="description" content="Console d'administration Christus's Autobot : supervision des bots, logs temps réel et chat admin." />
+    <link rel="icon" href="logo.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin">
+    <div class="scanlines"></div>
+    <div class="glow glow-red"></div>
+    <div class="glow glow-dark"></div>
+
+    <!-- ───────── écran de verrouillage ───────── -->
+    <section id="lockScreen" class="lock">
+      <div class="lock-card">
+        <img src="logo.png" alt="Logo Christus's Autobot" class="lock-logo" width="120" height="120" />
+        <h1>CHRISTUS'S <span>AUTOBOT</span></h1>
+        <p class="lock-sub">ZONE RESTREINTE · NIVEAU ROOT</p>
+        <div class="pin-row">
+          <input class="pin" type="password" inputmode="numeric" maxlength="1" />
+          <input class="pin" type="password" inputmode="numeric" maxlength="1" />
+          <input class="pin" type="password" inputmode="numeric" maxlength="1" />
+          <input class="pin" type="password" inputmode="numeric" maxlength="1" />
+        </div>
+        <button id="unlockBtn" class="btn danger wide"><i class="fa-solid fa-fingerprint"></i> Déverrouiller</button>
+        <p id="lockError" class="lock-error"></p>
+        <a class="back" href="/"><i class="fa-solid fa-arrow-left"></i> Retour au site</a>
+      </div>
+    </section>
+
+    <!-- ───────── console ───────── -->
+    <div id="console" class="console hidden">
+      <header class="admin-top">
+        <div class="brand">
+          <img src="logo.png" alt="Christus's Autobot" width="38" height="38" />
+          <div>
+            <strong>CHRISTUS'S AUTOBOT</strong>
+            <span>console d'administration</span>
+          </div>
+        </div>
+        <div class="top-actions">
+          <span class="pill"><i class="fa-solid fa-microchip"></i> <span id="sysRam">—</span> Mo</span>
+          <span class="pill"><i class="fa-regular fa-clock"></i> <span id="sysUptime">—</span></span>
+          <button class="btn ghost" id="logoutBtn"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+      </header>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="dash"><i class="fa-solid fa-gauge-high"></i> Dashboard</button>
+        <button class="tab" data-tab="bots"><i class="fa-solid fa-robot"></i> Bots</button>
+        <button class="tab" data-tab="logs"><i class="fa-solid fa-terminal"></i> Logs</button>
+        <button class="tab" data-tab="chat"><i class="fa-solid fa-comments"></i> Chat</button>
+        <button class="tab" data-tab="events"><i class="fa-solid fa-shield-halved"></i> Sécurité</button>
+      </nav>
+
+      <main class="admin-main">
+        <section class="view" id="view-dash">
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-label">Bots en ligne</span><span class="stat-value" id="statOnline">0</span></div>
+            <div class="stat"><span class="stat-label">Sessions</span><span class="stat-value" id="statTotal">0</span></div>
+            <div class="stat"><span class="stat-label">Historique</span><span class="stat-value" id="statHistory">0</span></div>
+            <div class="stat"><span class="stat-label">Heap Node</span><span class="stat-value" id="statHeap">0</span></div>
+          </div>
+          <div class="card">
+            <h2><i class="fa-solid fa-bolt"></i> Actions rapides</h2>
+            <div class="quick">
+              <button class="btn danger" id="stopAllBtn"><i class="fa-solid fa-skull"></i> Kill switch global</button>
+              <button class="btn ghost" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Rafraîchir</button>
+              <a class="btn ghost" href="/" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> Site public</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="view hidden" id="view-bots">
+          <div id="adminBots" class="bot-grid"></div>
+        </section>
+
+        <section class="view hidden" id="view-logs">
+          <select id="adminLogSelect"></select>
+          <pre id="adminLogs" class="logs">Sélectionne un bot.</pre>
+        </section>
+
+        <section class="view hidden" id="view-chat">
+          <div class="card chat-card">
+            <div class="chat-head">
+              <h2><i class="fa-solid fa-comments"></i> Chat admin</h2>
+              <button class="btn ghost" id="clearChat"><i class="fa-solid fa-trash"></i> Vider</button>
+            </div>
+            <div id="adminChat" class="chat-stream"></div>
+            <form id="adminChatForm" class="chat-form">
+              <input id="adminChatInput" type="text" placeholder="Répondre en tant qu'admin..." autocomplete="off" />
+              <button class="btn danger" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </section>
+
+        <section class="view hidden" id="view-events">
+          <div class="card">
+            <h2><i class="fa-solid fa-shield-halved"></i> Journal de sécurité</h2>
+            <ul id="eventList" class="event-list"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

@@ -167,7 +167,7 @@ function renderBots(info) {
       const card = document.createElement("div");
       card.className = "bot-card";
       card.innerHTML = `
-        <img src="${bot.thumbSrc}" alt="${bot.name}" onerror="this.src='https://i.imgur.com/BNKq0fl.jpeg'" />
+        <img src="${bot.thumbSrc}" alt="${bot.name}" onerror="this.src='logo.png'" />
         <div class="bot-info">
           <div class="bot-name">${bot.name}</div>
           <div class="bot-meta">prefix "${bot.prefix}" · ${bot.commands} cmds · ${bot.handleEvent} events</div>
@@ -220,3 +220,52 @@ async function refreshStatus() {
 loadCommands();
 refreshStatus();
 setInterval(refreshStatus, 4000);
+
+// ───────────── chat visiteur ─────────────
+let lastChatAt = 0;
+const myMessages = new Set();
+
+function toggleChat() {
+  $("chatBox").classList.toggle("open");
+  if ($("chatBox").classList.contains("open")) loadChat();
+}
+$("chatToggle").onclick = toggleChat;
+
+function renderChat(messages) {
+  const box = $("chatStream");
+  messages.forEach((message) => {
+    const div = document.createElement("div");
+    const mine = myMessages.has(message.id);
+    div.className = "msg " + (message.admin ? "admin" : mine ? "me" : "them");
+    div.innerHTML = `<span class="who">${message.author} · ${new Date(message.at).toLocaleTimeString()}</span>${message.text.replace(/</g, "&lt;")}`;
+    box.appendChild(div);
+    lastChatAt = Math.max(lastChatAt, message.at);
+  });
+  box.scrollTop = box.scrollHeight;
+}
+
+async function loadChat() {
+  try {
+    const data = await (await fetch("/chat?since=" + lastChatAt)).json();
+    renderChat(data.messages || []);
+  } catch (error) { /* ignore */ }
+}
+
+$("chatForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const text = $("chatInput").value.trim();
+  if (!text) return;
+  $("chatInput").value = "";
+  try {
+    const response = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, name: $("chatName").value.trim() || "Visiteur" })
+    });
+    const data = await response.json();
+    if (data.message) myMessages.add(data.message.id);
+    loadChat();
+  } catch (error) { /* ignore */ }
+});
+
+setInterval(() => { if ($("chatBox").classList.contains("open")) loadChat(); }, 3000);

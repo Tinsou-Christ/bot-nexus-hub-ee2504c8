@@ -154,32 +154,110 @@ function saveHistory(entry) {
 }
 
 // ───────────────── infos du compte (nom + photo de profil) ─────────────────
-function avatarUrl(userid) {
-  return `https://graph.facebook.com/${userid}/picture?height=200&width=200`;
+const UA =
+  "Mozilla/5.0 (Linux; Android 12; M2102J20SG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36";
+
+function cookieHeader(appState) {
+  return (appState || [])
+    .filter((item) => item && item.key && item.value !== undefined)
+    .map((item) => `${item.key}=${item.value}`)
+    .join("; ");
 }
 
-async function fetchAccountName(userid, appState) {
-  try {
-    const cookie = appState
-      .filter((item) => item && item.key && item.value !== undefined)
-      .map((item) => `${item.key}=${item.value}`)
-      .join("; ");
-    const { data } = await axios.get(`https://mbasic.facebook.com/profile.php?id=${userid}`, {
-      headers: {
-        cookie,
-        "user-agent":
-          "Mozilla/5.0 (Linux; Android 12; M2102J20SG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Mobile Safari/537.36"
-      },
-      timeout: 15000
-    });
-    const match = String(data).match(/<title[^>]*>([^<]+)<\/title>/i);
-    const name = match ? match[1].trim() : "";
-    if (name && !/facebook|log in|connexion/i.test(name)) return name;
-  } catch (error) {
-    /* silencieux : on retombe sur l'UID */
-  }
-  return `Compte ${userid}`;
+function decodeEntities(text) {
+  return String(text)
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .trim();
 }
+
+const BAD_NAME = /^(erreur|error|facebook|log in|connexion|se connecter|content not found|page introuvable)/i;
+
+function extractName(html) {
+  const candidates = [];
+  const title = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (title) candidates.push(title[1]);
+  const og = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i);
+  if (og) candidates.push(og[1]);
+  const alt = html.match(/alt=["']([^"']{2,60}?)["'][^>]*class=["'][^"']*profpic/i);
+  if (alt) candidates.push(alt[1]);
+  const profilePic = html.match(/alt=["'](?:Photo de profil de |Profile picture of )([^"']+)["']/i);
+  if (profilePic) candidates.push(profilePic[1]);
+  for (const raw of candidates) {
+    const name = decodeEntities(raw).replace(/\s*\|\s*Facebook\s*$/i, "").trim();
+    if (name && !BAD_NAME.test(name) && name.length > 1) return name;
+  }
+  return "";
+}
+
+function extractPicture(html) {
+  const patterns = [
+    /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+    /src=["'](https:\/\/scontent[^"']+?)["']/i,
+    /(https:\/\/[a-z0-9.\-]*fbcdn\.net\/[^"'\\ ]+?\.jpg[^"'\\ ]*)/i
+  ];
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match) return decodeEntities(match[1]).replace(/\\\//g, "/");
+  }
+  return "";
+}
+
+/** Récupère nom + URL de la photo via plusieurs sources (cookies du compte). */
+async function fetchAccountProfile(userid, appState) {
+  const cookie = cookieHeader(appState);
+  const headers = {
+    cookie,
+    "user-agent": UA,
+    "accept-language": "fr-FR,fr;q=0.9,en;q=0.8",
+    accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+  };
+  const urls = [
+    `https://mbasic.facebook.com/profile.php?id=${userid}&v=info`,
+    `https://mbasic.facebook.com/${userid}`,
+    `https://m.facebook.com/profile.php?id=${userid}`,
+    `https://www.facebook.com/profile.php?id=${userid}`,
+    "https://mbasic.facebook.com/me"
+  ];
+  const result = { name: "", picture: "" };
+  for (const url of urls) {
+    try {
+      const { data } = await axios.get(url, { headers, timeout: 15000, maxRedirects: 5 });
+      const html = String(data);
+      if (!result.name) result.name = extractName(html);
+      if (!result.picture) result.picture = extractPicture(html);
+      if (result.name && result.picture) break;
+    } catch (error) {
+      /* on essaie la source suivante */
+    }
+  }
+  if (!result.name) result.name = `Compte ${userid}`;
+  return result;
+}
+
+/** Rafraîchit nom + photo d'une session en arrière-plan. */
+async function refreshProfile(session) {
+  try {
+    const appState = readJson(session.dirAccount, []);
+    const profile = await fetchAccountProfile(session.userid, appState);
+    if (profile.name && !/^Compte /.test(profile.name)) session.name = profile.name;
+    if (profile.picture) session.pictureUrl = profile.picture;
+  } catch (error) {
+    /* silencieux */
+  }
+}
+
+/** Photo servie par NOTRE serveur (les URLs fbcdn expirent / bloquent le hotlink). */
+const avatarCache = new Map(); // uid -> { buffer, type, at }
+const FALLBACK_AVATAR = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+  "base64"
+);
+
 
 // ─────────────────────────── déploiement ──────────────────────────
 function stopSession(userid, { remove = true } = {}) {
@@ -311,12 +389,15 @@ app.post("/login", async (req, res) => {
     const applied = buildSessionConfig(sessionDir, { prefix, admin });
     const dirConfigCommands = buildSessionCommands(sessionDir, selectedCommands, selectedEvents);
 
-    const name = await fetchAccountName(userid, appState);
+    const profile = await fetchAccountProfile(userid, appState);
+    const name = profile.name;
 
     const session = {
       userid,
       name,
-      thumbSrc: avatarUrl(userid),
+      pictureUrl: profile.picture,
+      thumbSrc: `/avatar/${userid}`,
+
       profileUrl: `https://www.facebook.com/profile.php?id=${userid}`,
       prefix: applied.prefix,
       admin: applied.admins,
@@ -354,7 +435,210 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// ───────────────────── photo de profil (proxy + cache) ─────────────────────
+app.get("/avatar/:uid", async (req, res) => {
+  const uid = String(req.params.uid || "");
+  const cached = avatarCache.get(uid);
+  if (cached && Date.now() - cached.at < 30 * 60 * 1000) {
+    res.set("Content-Type", cached.type);
+    return res.send(cached.buffer);
+  }
+  const session = sessions.get(uid);
+  const appState = session ? readJson(session.dirAccount, []) : [];
+  const tries = [];
+  if (session && session.pictureUrl) tries.push(session.pictureUrl);
+  tries.push(`https://graph.facebook.com/${uid}/picture?height=200&width=200`);
+  for (const url of tries) {
+    try {
+      const response = await axios.get(url, {
+        responseType: "arraybuffer",
+        timeout: 15000,
+        maxRedirects: 5,
+        headers: { "user-agent": UA, cookie: cookieHeader(appState), referer: "https://www.facebook.com/" }
+      });
+      const type = String(response.headers["content-type"] || "");
+      if (!type.startsWith("image/")) continue;
+      const buffer = Buffer.from(response.data);
+      avatarCache.set(uid, { buffer, type, at: Date.now() });
+      res.set("Content-Type", type);
+      return res.send(buffer);
+    } catch (error) {
+      /* source suivante */
+    }
+  }
+  if (session) refreshProfile(session);
+  res.set("Content-Type", "image/png");
+  res.send(FALLBACK_AVATAR);
+});
+
+// rafraîchissement périodique des profils (nom + photo)
+setInterval(() => {
+  for (const session of sessions.values()) {
+    if (!session.name || /^Compte /.test(session.name) || !session.pictureUrl) refreshProfile(session);
+  }
+}, 60 * 1000);
+
+// ─────────────────────────── ESPACE ADMIN ───────────────────────────
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "0709";
+const adminTokens = new Map(); // token -> { at, ip }
+const TOKEN_TTL = 6 * 60 * 60 * 1000;
+const loginAttempts = new Map(); // ip -> { count, until }
+const DIR_CHAT = path.join(DIR_DATA, "chat.json");
+let chat = readJson(DIR_CHAT, []);
+const events = []; // journal d'activité admin
+
+function logEvent(type, message) {
+  events.push({ type, message, at: Date.now() });
+  if (events.length > 200) events.splice(0, events.length - 200);
+}
+
+function saveChat() {
+  fs.ensureDirSync(DIR_DATA);
+  if (chat.length > 300) chat = chat.slice(-300);
+  fs.writeFileSync(DIR_CHAT, JSON.stringify(chat, null, 2));
+}
+
+function isAdmin(req) {
+  const token = req.get("x-admin-token") || req.body?.token || req.query?.token;
+  const entry = adminTokens.get(String(token || ""));
+  if (!entry) return false;
+  if (Date.now() - entry.at > TOKEN_TTL) {
+    adminTokens.delete(String(token));
+    return false;
+  }
+  return true;
+}
+
+function requireAdmin(req, res, next) {
+  if (!isAdmin(req)) return res.status(401).json({ error: true, message: "Accès admin requis." });
+  next();
+}
+
+app.post("/admin/login", (req, res) => {
+  const ip = req.ip;
+  const attempt = loginAttempts.get(ip) || { count: 0, until: 0 };
+  if (attempt.until > Date.now())
+    return res.status(429).json({ error: true, message: "Trop de tentatives, réessaie plus tard." });
+  const password = String(req.body?.password || "");
+  if (password !== ADMIN_PASSWORD) {
+    attempt.count += 1;
+    if (attempt.count >= 5) {
+      attempt.until = Date.now() + 5 * 60 * 1000;
+      attempt.count = 0;
+    }
+    loginAttempts.set(ip, attempt);
+    logEvent("security", `Tentative admin échouée depuis ${ip}`);
+    return res.status(403).json({ error: true, message: "Code admin incorrect." });
+  }
+  loginAttempts.delete(ip);
+  const token = crypto.randomBytes(24).toString("hex");
+  adminTokens.set(token, { at: Date.now(), ip });
+  logEvent("auth", `Connexion admin depuis ${ip}`);
+  res.json({ success: true, token, message: "Bienvenue Christus." });
+});
+
+app.post("/admin/logout", requireAdmin, (req, res) => {
+  adminTokens.delete(String(req.get("x-admin-token") || req.body?.token));
+  res.json({ success: true });
+});
+
+app.get("/admin/overview", requireAdmin, (req, res) => {
+  const bots = [...sessions.values()].map((session) => ({
+    userid: session.userid,
+    name: session.name,
+    thumbSrc: session.thumbSrc,
+    profileUrl: session.profileUrl,
+    prefix: session.prefix,
+    admin: session.admin,
+    commands: session.commands.length,
+    handleEvent: session.handleEvent.length,
+    online: Boolean(session.child),
+    pid: session.child ? session.child.pid : null,
+    logs: session.logs.length,
+    time: session.startedAt ? Math.floor((Date.now() - session.startedAt) / 1000) : 0
+  }));
+  const memory = process.memoryUsage();
+  res.json({
+    bots,
+    online: bots.filter((bot) => bot.online).length,
+    total: bots.length,
+    history: readJson(DIR_HISTORY, []).length,
+    events: events.slice(-60).reverse(),
+    server: {
+      uptime: Math.floor(process.uptime()),
+      rss: Math.round(memory.rss / 1024 / 1024),
+      heap: Math.round(memory.heapUsed / 1024 / 1024),
+      node: process.version
+    }
+  });
+});
+
+// privilège admin : arrêter / relancer / supprimer n'importe quel bot sans son code
+app.post("/admin/bot/:action", requireAdmin, (req, res) => {
+  const { action } = req.params;
+  const session = sessions.get(String(req.body?.uid || ""));
+  if (!session) return res.status(404).json({ error: true, message: "Bot introuvable." });
+  if (action === "stop") {
+    stopSession(session.userid, { remove: false });
+    logEvent("admin", `Bot ${session.name} arrêté par l'admin`);
+    return res.json({ success: true, message: `${session.name} arrêté.` });
+  }
+  if (action === "restart") {
+    stopSession(session.userid, { remove: false });
+    setTimeout(() => startSession(session), 800);
+    logEvent("admin", `Bot ${session.name} redémarré par l'admin`);
+    return res.json({ success: true, message: `${session.name} redémarre...` });
+  }
+  if (action === "delete") {
+    stopSession(session.userid);
+    logEvent("admin", `Bot ${session.name} supprimé par l'admin`);
+    return res.json({ success: true, message: `${session.name} supprimé.` });
+  }
+  if (action === "refresh") {
+    avatarCache.delete(session.userid);
+    refreshProfile(session);
+    return res.json({ success: true, message: "Profil en cours de rafraîchissement." });
+  }
+  res.status(400).json({ error: true, message: "Action inconnue." });
+});
+
+app.post("/admin/stopall", requireAdmin, (req, res) => {
+  const count = sessions.size;
+  for (const userid of [...sessions.keys()]) stopSession(userid);
+  logEvent("admin", `Arrêt total (${count} bot(s))`);
+  res.json({ success: true, message: `${count} bot(s) arrêté(s).` });
+});
+
+// ───────────────────────────── CHAT ─────────────────────────────
+app.get("/chat", (req, res) => {
+  const since = Number(req.query.since || 0);
+  res.json({ messages: chat.filter((message) => message.at > since).slice(-100) });
+});
+
+app.post("/chat", (req, res) => {
+  const admin = isAdmin(req);
+  const text = String(req.body?.message || "").trim().slice(0, 600);
+  if (!text) return res.status(400).json({ error: true, message: "Message vide." });
+  const author = admin
+    ? "Christus (Admin)"
+    : String(req.body?.name || "Visiteur").trim().slice(0, 24) || "Visiteur";
+  const message = { id: crypto.randomBytes(8).toString("hex"), author, admin, text, at: Date.now() };
+  chat.push(message);
+  saveChat();
+  res.json({ success: true, message });
+});
+
+app.delete("/chat", requireAdmin, (req, res) => {
+  chat = [];
+  saveChat();
+  logEvent("admin", "Chat vidé");
+  res.json({ success: true });
+});
+
+app.get("/admin", (req, res) => res.sendFile(path.join(ROOT, "public", "admin.html")));
+
 process.on("unhandledRejection", (reason) => console.error("Unhandled:", reason));
+
 function stopAll() {
   for (const userid of [...sessions.keys()]) stopSession(userid);
 }

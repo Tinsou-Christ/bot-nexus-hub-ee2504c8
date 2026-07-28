@@ -15,14 +15,16 @@
 
     <header class="topbar">
       <div class="brand">
-        <span class="brand-dot"></span>
-        <span>AUTOBOT<strong>DEPLOY</strong></span>
+        <img src="logo.png" alt="Logo Christus's Autobot" class="brand-logo" width="34" height="34" />
+        <span>CHRISTUS'S<strong> AUTOBOT</strong></span>
       </div>
       <div class="topbar-meta">
         <span><i class="fa-solid fa-bolt"></i> <span id="ping">—</span></span>
         <span><i class="fa-regular fa-clock"></i> <span id="time">—</span></span>
+        <a class="admin-link" href="/admin"><i class="fa-solid fa-user-shield"></i> Admin</a>
       </div>
     </header>
+
 
     <main>
       <section class="hero">
@@ -120,7 +122,31 @@
       </section>
     </main>
 
-    <footer>Autobot Deploy — multi-sessions · by Christus</footer>
+    <button id="chatToggle" class="chat-fab" title="Chat avec l'admin">
+      <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <div id="chatBox" class="chat-box">
+      <div class="chat-box-head">
+        <img src="logo.png" alt="Christus's Autobot" width="28" height="28" />
+        <div>
+          <strong>Chat support</strong>
+          <span>Christus's Autobot</span>
+        </div>
+        <button class="icon-btn" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="chatStream" class="chat-stream"></div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatName" type="text" placeholder="Ton nom" maxlength="24" />
+        <div class="chat-send">
+          <input id="chatInput" type="text" placeholder="Écris un message..." autocomplete="off" />
+          <button class="btn primary" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <footer>Christus's Autobot — multi-sessions · by Christus</footer>
+
 
     <div id="stopModal" class="modal">
       <div class="modal-card">
