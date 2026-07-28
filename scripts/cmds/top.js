@@ -588,7 +588,7 @@ async function renderAndSend(message, richList, page, themeKey, threadID) {
 module.exports = {
   config: {
     name:        "top",
-    aliases:     ["leaderboard", "lb", "classement", "pantheon", "rich"],
+    aliases:     [],
     version:     "5.0",
     author:      "Christus",
     countDown:   5,
