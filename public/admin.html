@@ -46,6 +46,8 @@
         <div class="top-actions">
           <span class="pill"><i class="fa-solid fa-microchip"></i> <span id="sysRam">—</span> Mo</span>
           <span class="pill"><i class="fa-regular fa-clock"></i> <span id="sysUptime">—</span></span>
+          <span class="pill"><i class="fa-solid fa-satellite-dish"></i> <span id="sysPing">—</span> ms</span>
+          <span class="pill"><i class="fa-solid fa-clock-rotate-left"></i> <span id="clock">—</span></span>
           <button class="btn ghost" id="logoutBtn"><i class="fa-solid fa-power-off"></i></button>
         </div>
       </header>
@@ -65,24 +67,57 @@
             <div class="stat"><span class="stat-label">Sessions</span><span class="stat-value" id="statTotal">0</span></div>
             <div class="stat"><span class="stat-label">Historique</span><span class="stat-value" id="statHistory">0</span></div>
             <div class="stat"><span class="stat-label">Heap Node</span><span class="stat-value" id="statHeap">0</span></div>
+            <div class="stat"><span class="stat-label">Commandes</span><span class="stat-value" id="statCmds">0</span></div>
+            <div class="stat"><span class="stat-label">Messages chat</span><span class="stat-value" id="statChat">0</span></div>
+          </div>
+          <div class="card">
+            <h2><i class="fa-solid fa-chart-line"></i> Activité (bots en ligne)</h2>
+            <div class="spark-wrap"><canvas id="sparkline" width="900" height="180"></canvas></div>
           </div>
           <div class="card">
             <h2><i class="fa-solid fa-bolt"></i> Actions rapides</h2>
             <div class="quick">
               <button class="btn danger" id="stopAllBtn"><i class="fa-solid fa-skull"></i> Kill switch global</button>
               <button class="btn ghost" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Rafraîchir</button>
+              <button class="btn ghost" id="refreshAllProfiles"><i class="fa-solid fa-user-pen"></i> Rafraîchir tous les profils</button>
+              <button class="btn ghost" id="exportBtn"><i class="fa-solid fa-file-arrow-down"></i> Exporter le rapport</button>
+              <button class="btn ghost" id="autoBtn"><i class="fa-solid fa-bolt"></i> Auto-refresh : ON</button>
               <a class="btn ghost" href="/" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> Site public</a>
             </div>
           </div>
         </section>
 
         <section class="view hidden" id="view-bots">
-          <div id="adminBots" class="bot-grid"></div>
+          <div class="card">
+            <div class="toolbar">
+              <input id="botSearch" type="text" placeholder="Rechercher un bot (nom, UID, prefix)..." />
+              <select id="botSort">
+                <option value="recent">Trier : plus récents</option>
+                <option value="uptime">Trier : uptime</option>
+                <option value="name">Trier : nom</option>
+                <option value="status">Trier : statut</option>
+              </select>
+              <select id="botFilter">
+                <option value="all">Tous</option>
+                <option value="online">En ligne</option>
+                <option value="offline">Hors ligne</option>
+              </select>
+            </div>
+            <div id="adminBots" class="bot-grid"></div>
+          </div>
         </section>
 
         <section class="view hidden" id="view-logs">
-          <select id="adminLogSelect"></select>
-          <pre id="adminLogs" class="logs">Sélectionne un bot.</pre>
+          <div class="card">
+            <div class="toolbar">
+              <select id="adminLogSelect"></select>
+              <input id="logFilter" type="text" placeholder="Filtrer les lignes..." />
+              <label class="switch"><input type="checkbox" id="logAuto" checked /> Suivi live</label>
+              <button class="btn ghost" id="logCopy"><i class="fa-solid fa-copy"></i></button>
+              <button class="btn ghost" id="logDownload"><i class="fa-solid fa-download"></i></button>
+            </div>
+            <pre id="adminLogs" class="logs">Sélectionne un bot.</pre>
+          </div>
         </section>
 
         <section class="view hidden" id="view-chat">
@@ -107,6 +142,8 @@
         </section>
       </main>
     </div>
+
+    <div class="toasts" id="toasts"></div>
 
     <script src="admin.js"></script>
   </body>
