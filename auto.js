@@ -99,7 +99,25 @@ function readJson(dir, fallback) {
 }
 
 // ───────────── écriture des configs PROPRES à une session ─────────────
-function buildSessionConfig(sessionDir, { prefix, admin }) {
+/** Donne à chaque bot sa propre base de données (sinon ils s'écrasent entre eux). */
+function isolateDatabase(config, userid) {
+  const db = config.database || (config.database = {});
+  db.autoSyncWhenStart = false;
+  if (db.type === "mongodb" && typeof db.uriMongodb === "string" && db.uriMongodb) {
+    try {
+      const uri = new URL(db.uriMongodb);
+      const base = (uri.pathname || "/").replace(/^\//, "").split("?")[0] || "goatbot";
+      const cleanBase = base.replace(/_\d{5,}$/, "");
+      uri.pathname = `/${cleanBase}_${userid}`;
+      db.uriMongodb = uri.toString();
+    } catch (error) {
+      /* uri illisible : on laisse tel quel */
+    }
+  }
+  return config;
+}
+
+function buildSessionConfig(sessionDir, { prefix, admin, userid }) {
   const config = readJson(DIR_CONFIG, {});
   if (prefix) config.prefix = prefix;
   const admins = (Array.isArray(admin) ? admin : [admin])
@@ -114,10 +132,75 @@ function buildSessionConfig(sessionDir, { prefix, admin }) {
   // pas de dashboard interne (sinon plusieurs bots se battent pour le même port)
   if (config.dashBoard) config.dashBoard.enable = false;
   if (config.serverUptime) config.serverUptime.enable = false;
+  if (config.autoUptime) config.autoUptime.enable = false;
+  isolateDatabase(config, userid);
   const dir = path.join(sessionDir, "config.dev.json");
   fs.writeFileSync(dir, JSON.stringify(config, null, 2));
   return { dir, prefix: config.prefix, admins };
 }
+
+// ───────── espace de travail isolé (cwd propre à chaque bot) ─────────
+// Certaines librairies (fca-unofficial, caches, fichiers temporaires) écrivent
+// dans process.cwd(). Si tous les bots partagent le même dossier, le second
+// déploiement écrase l'état du premier => déconnexion. On crée donc un
+// "miroir" de symlinks : le code est partagé (lecture seule), les dossiers
+// dans lesquels on écrit sont réels et propres à chaque bot.
+const WRITABLE_DIRS = new Set([
+  "scripts",
+  "scripts/cmds",
+  "scripts/cmds/tmp",
+  "scripts/events",
+  "scripts/events/data",
+  "scripts/events/assets",
+  "cache",
+  "tmp"
+]);
+const SKIP_ENTRIES = new Set(["sessions", "data", ".git", "node_modules/.cache"]);
+
+function mirrorDir(sourceDir, targetDir, relative = "") {
+  fs.ensureDirSync(targetDir);
+  for (const entry of fs.readdirSync(sourceDir)) {
+    const rel = relative ? `${relative}/${entry}` : entry;
+    if (SKIP_ENTRIES.has(rel)) continue;
+    const source = path.join(sourceDir, entry);
+    const target = path.join(targetDir, entry);
+    if (WRITABLE_DIRS.has(rel)) {
+      mirrorDir(source, target, rel);
+      continue;
+    }
+    if (fs.existsSync(target) || fs.lstatSync(target, { throwIfNoEntry: false })) continue;
+    try {
+      fs.symlinkSync(source, target, fs.statSync(source).isDirectory() ? "dir" : "file");
+    } catch (error) {
+      /* déjà présent */
+    }
+  }
+}
+
+function buildWorkspace(sessionDir, userid) {
+  const workspace = path.join(sessionDir, "workspace");
+  fs.ensureDirSync(workspace);
+  mirrorDir(ROOT, workspace);
+
+  // fca-config propre au bot : pas d'auto-update pendant qu'un autre bot tourne
+  const fcaTarget = path.join(workspace, "fca-config.json");
+  try {
+    fs.removeSync(fcaTarget);
+  } catch (error) {
+    /* rien */
+  }
+  const fca = readJson(path.join(ROOT, "fca-config.json"), {});
+  fca.autoUpdate = false;
+  fca.checkUpdate = { ...(fca.checkUpdate || {}), enabled: false, install: false, notifyIfCurrent: false };
+  fs.writeFileSync(fcaTarget, JSON.stringify(fca, null, 2));
+
+  // dossiers d'écriture garantis
+  for (const dir of ["scripts/cmds/tmp", "scripts/events/data", "scripts/events/assets", "cache", "tmp"])
+    fs.ensureDirSync(path.join(workspace, dir));
+
+  return workspace;
+}
+
 
 function buildSessionCommands(sessionDir, selectedCommands, selectedEvents) {
   const configCommands = readJson(DIR_CONFIG_COMMANDS, {});
