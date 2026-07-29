@@ -529,9 +529,12 @@ app.post("/login", async (req, res) => {
       dirConfig: applied.dir,
       dirConfigCommands,
       dirAccount,
+      workspace,
       logs: [],
       child: null,
       startedAt: null,
+      restarts: 0,
+      queued: false,
       stopping: false
     };
     sessions.set(userid, session);
