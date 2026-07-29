@@ -360,18 +360,48 @@ function stopSession(userid, { remove = true } = {}) {
   return true;
 }
 
-function startSession(session) {
+// File d'attente : on ne démarre qu'un bot à la fois (les connexions Facebook
+// simultanées se gênent et font tomber les bots déjà en ligne).
+const startQueue = [];
+let queueRunning = false;
+const START_SPACING = 6000;
+
+function enqueueStart(session) {
+  if (session.queued) return;
+  session.queued = true;
+  startQueue.push(session);
+  if (startQueue.length > 1) pushLog(session, "En file d'attente de démarrage...");
+  runQueue();
+}
+
+async function runQueue() {
+  if (queueRunning) return;
+  queueRunning = true;
+  while (startQueue.length) {
+    const session = startQueue.shift();
+    session.queued = false;
+    if (sessions.get(session.userid) !== session || session.child || session.stopping) continue;
+    spawnSession(session);
+    await new Promise((resolve) => setTimeout(resolve, START_SPACING));
+  }
+  queueRunning = false;
+}
+
+function spawnSession(session) {
   pushLog(session, "Démarrage du bot...");
-  const child = spawn("node", ["Goat.js"], {
-    cwd: ROOT,
+  const child = spawn("node", ["--max-old-space-size=512", path.join(ROOT, "Goat.js")], {
+    cwd: session.workspace || ROOT,
     env: {
       ...process.env,
       NODE_ENV: "development",
+      PORT: "",
+      GOATBOT_UID: session.userid,
       GOATBOT_CONFIG: session.dirConfig,
       GOATBOT_CONFIG_COMMANDS: session.dirConfigCommands,
       GOATBOT_ACCOUNT: session.dirAccount
     },
-    shell: false
+    shell: false,
+    detached: false
   });
   session.child = child;
   session.startedAt = Date.now();
@@ -379,18 +409,26 @@ function startSession(session) {
 
   child.stdout.on("data", (data) => pushLog(session, data.toString()));
   child.stderr.on("data", (data) => pushLog(session, data.toString()));
+  child.on("error", (error) => pushLog(session, `Erreur de processus: ${error.message}`));
   child.on("close", (code) => {
     const wasActive = session.child === child;
     session.child = null;
     session.startedAt = null;
     pushLog(session, `Le bot s'est arrêté (code ${code}).`);
     if (!wasActive || session.stopping) return;
-    // code 2 = redémarrage demandé par le bot, sinon on relance aussi (auto-uptime)
+    session.restarts = (session.restarts || 0) + 1;
+    // backoff pour éviter les boucles de reconnexion qui saturent le serveur
+    const delay = code === 2 ? 2000 : Math.min(60000, 5000 * session.restarts);
     setTimeout(() => {
-      if (sessions.get(session.userid) === session && !session.child) startSession(session);
-    }, code === 2 ? 1000 : 5000);
+      if (sessions.get(session.userid) === session && !session.child) enqueueStart(session);
+    }, delay);
   });
 }
+
+function startSession(session) {
+  enqueueStart(session);
+}
+
 
 // ───────────────────────────── routes ─────────────────────────────
 app.get("/", (req, res) => {
