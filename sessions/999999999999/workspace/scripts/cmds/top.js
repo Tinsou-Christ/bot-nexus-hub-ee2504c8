@@ -1,1 +1,0 @@
-/dev-server/scripts/cmds/top.js
