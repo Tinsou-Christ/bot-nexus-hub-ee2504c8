@@ -507,8 +507,9 @@ app.post("/login", async (req, res) => {
     fs.ensureDirSync(sessionDir);
     const dirAccount = path.join(sessionDir, "account.dev.txt");
     fs.writeFileSync(dirAccount, JSON.stringify(appState, null, 2));
-    const applied = buildSessionConfig(sessionDir, { prefix, admin });
+    const applied = buildSessionConfig(sessionDir, { prefix, admin, userid });
     const dirConfigCommands = buildSessionCommands(sessionDir, selectedCommands, selectedEvents);
+    const workspace = buildWorkspace(sessionDir, userid);
 
     const profile = await fetchAccountProfile(userid, appState);
     const name = profile.name;
