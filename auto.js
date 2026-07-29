@@ -99,7 +99,25 @@ function readJson(dir, fallback) {
 }
 
 // ───────────── écriture des configs PROPRES à une session ─────────────
-function buildSessionConfig(sessionDir, { prefix, admin }) {
+/** Donne à chaque bot sa propre base de données (sinon ils s'écrasent entre eux). */
+function isolateDatabase(config, userid) {
+  const db = config.database || (config.database = {});
+  db.autoSyncWhenStart = false;
+  if (db.type === "mongodb" && typeof db.uriMongodb === "string" && db.uriMongodb) {
+    try {
+      const uri = new URL(db.uriMongodb);
+      const base = (uri.pathname || "/").replace(/^\//, "").split("?")[0] || "goatbot";
+      const cleanBase = base.replace(/_\d{5,}$/, "");
+      uri.pathname = `/${cleanBase}_${userid}`;
+      db.uriMongodb = uri.toString();
+    } catch (error) {
+      /* uri illisible : on laisse tel quel */
+    }
+  }
+  return config;
+}
+
+function buildSessionConfig(sessionDir, { prefix, admin, userid }) {
   const config = readJson(DIR_CONFIG, {});
   if (prefix) config.prefix = prefix;
   const admins = (Array.isArray(admin) ? admin : [admin])
@@ -114,10 +132,75 @@ function buildSessionConfig(sessionDir, { prefix, admin }) {
   // pas de dashboard interne (sinon plusieurs bots se battent pour le même port)
   if (config.dashBoard) config.dashBoard.enable = false;
   if (config.serverUptime) config.serverUptime.enable = false;
+  if (config.autoUptime) config.autoUptime.enable = false;
+  isolateDatabase(config, userid);
   const dir = path.join(sessionDir, "config.dev.json");
   fs.writeFileSync(dir, JSON.stringify(config, null, 2));
   return { dir, prefix: config.prefix, admins };
 }
+
+// ───────── espace de travail isolé (cwd propre à chaque bot) ─────────
+// Certaines librairies (fca-unofficial, caches, fichiers temporaires) écrivent
+// dans process.cwd(). Si tous les bots partagent le même dossier, le second
+// déploiement écrase l'état du premier => déconnexion. On crée donc un
+// "miroir" de symlinks : le code est partagé (lecture seule), les dossiers
+// dans lesquels on écrit sont réels et propres à chaque bot.
+const WRITABLE_DIRS = new Set([
+  "scripts",
+  "scripts/cmds",
+  "scripts/cmds/tmp",
+  "scripts/events",
+  "scripts/events/data",
+  "scripts/events/assets",
+  "cache",
+  "tmp"
+]);
+const SKIP_ENTRIES = new Set(["sessions", "data", ".git", "node_modules/.cache"]);
+
+function mirrorDir(sourceDir, targetDir, relative = "") {
+  fs.ensureDirSync(targetDir);
+  for (const entry of fs.readdirSync(sourceDir)) {
+    const rel = relative ? `${relative}/${entry}` : entry;
+    if (SKIP_ENTRIES.has(rel)) continue;
+    const source = path.join(sourceDir, entry);
+    const target = path.join(targetDir, entry);
+    if (WRITABLE_DIRS.has(rel)) {
+      mirrorDir(source, target, rel);
+      continue;
+    }
+    if (fs.existsSync(target) || fs.lstatSync(target, { throwIfNoEntry: false })) continue;
+    try {
+      fs.symlinkSync(source, target, fs.statSync(source).isDirectory() ? "dir" : "file");
+    } catch (error) {
+      /* déjà présent */
+    }
+  }
+}
+
+function buildWorkspace(sessionDir, userid) {
+  const workspace = path.join(sessionDir, "workspace");
+  fs.ensureDirSync(workspace);
+  mirrorDir(ROOT, workspace);
+
+  // fca-config propre au bot : pas d'auto-update pendant qu'un autre bot tourne
+  const fcaTarget = path.join(workspace, "fca-config.json");
+  try {
+    fs.removeSync(fcaTarget);
+  } catch (error) {
+    /* rien */
+  }
+  const fca = readJson(path.join(ROOT, "fca-config.json"), {});
+  fca.autoUpdate = false;
+  fca.checkUpdate = { ...(fca.checkUpdate || {}), enabled: false, install: false, notifyIfCurrent: false };
+  fs.writeFileSync(fcaTarget, JSON.stringify(fca, null, 2));
+
+  // dossiers d'écriture garantis
+  for (const dir of ["scripts/cmds/tmp", "scripts/events/data", "scripts/events/assets", "cache", "tmp"])
+    fs.ensureDirSync(path.join(workspace, dir));
+
+  return workspace;
+}
+
 
 function buildSessionCommands(sessionDir, selectedCommands, selectedEvents) {
   const configCommands = readJson(DIR_CONFIG_COMMANDS, {});
@@ -264,6 +347,7 @@ function stopSession(userid, { remove = true } = {}) {
   const session = sessions.get(userid);
   if (!session) return false;
   session.stopping = true;
+  session.queued = false;
   if (session.child) {
     try {
       session.child.kill("SIGKILL");
@@ -277,18 +361,48 @@ function stopSession(userid, { remove = true } = {}) {
   return true;
 }
 
-function startSession(session) {
+// File d'attente : on ne démarre qu'un bot à la fois (les connexions Facebook
+// simultanées se gênent et font tomber les bots déjà en ligne).
+const startQueue = [];
+let queueRunning = false;
+const START_SPACING = 6000;
+
+function enqueueStart(session) {
+  if (session.queued) return;
+  session.queued = true;
+  startQueue.push(session);
+  if (startQueue.length > 1) pushLog(session, "En file d'attente de démarrage...");
+  runQueue();
+}
+
+async function runQueue() {
+  if (queueRunning) return;
+  queueRunning = true;
+  while (startQueue.length) {
+    const session = startQueue.shift();
+    session.queued = false;
+    if (sessions.get(session.userid) !== session || session.child || session.stopping) continue;
+    spawnSession(session);
+    await new Promise((resolve) => setTimeout(resolve, START_SPACING));
+  }
+  queueRunning = false;
+}
+
+function spawnSession(session) {
   pushLog(session, "Démarrage du bot...");
-  const child = spawn("node", ["Goat.js"], {
-    cwd: ROOT,
+  const child = spawn("node", ["--max-old-space-size=512", path.join(ROOT, "Goat.js")], {
+    cwd: session.workspace || ROOT,
     env: {
       ...process.env,
       NODE_ENV: "development",
+      PORT: "",
+      GOATBOT_UID: session.userid,
       GOATBOT_CONFIG: session.dirConfig,
       GOATBOT_CONFIG_COMMANDS: session.dirConfigCommands,
       GOATBOT_ACCOUNT: session.dirAccount
     },
-    shell: false
+    shell: false,
+    detached: false
   });
   session.child = child;
   session.startedAt = Date.now();
@@ -296,18 +410,26 @@ function startSession(session) {
 
   child.stdout.on("data", (data) => pushLog(session, data.toString()));
   child.stderr.on("data", (data) => pushLog(session, data.toString()));
+  child.on("error", (error) => pushLog(session, `Erreur de processus: ${error.message}`));
   child.on("close", (code) => {
     const wasActive = session.child === child;
     session.child = null;
     session.startedAt = null;
     pushLog(session, `Le bot s'est arrêté (code ${code}).`);
     if (!wasActive || session.stopping) return;
-    // code 2 = redémarrage demandé par le bot, sinon on relance aussi (auto-uptime)
+    session.restarts = (session.restarts || 0) + 1;
+    // backoff pour éviter les boucles de reconnexion qui saturent le serveur
+    const delay = code === 2 ? 2000 : Math.min(60000, 5000 * session.restarts);
     setTimeout(() => {
-      if (sessions.get(session.userid) === session && !session.child) startSession(session);
-    }, code === 2 ? 1000 : 5000);
+      if (sessions.get(session.userid) === session && !session.child) enqueueStart(session);
+    }, delay);
   });
 }
+
+function startSession(session) {
+  enqueueStart(session);
+}
+
 
 // ───────────────────────────── routes ─────────────────────────────
 app.get("/", (req, res) => {
@@ -386,8 +508,9 @@ app.post("/login", async (req, res) => {
     fs.ensureDirSync(sessionDir);
     const dirAccount = path.join(sessionDir, "account.dev.txt");
     fs.writeFileSync(dirAccount, JSON.stringify(appState, null, 2));
-    const applied = buildSessionConfig(sessionDir, { prefix, admin });
+    const applied = buildSessionConfig(sessionDir, { prefix, admin, userid });
     const dirConfigCommands = buildSessionCommands(sessionDir, selectedCommands, selectedEvents);
+    const workspace = buildWorkspace(sessionDir, userid);
 
     const profile = await fetchAccountProfile(userid, appState);
     const name = profile.name;
@@ -407,9 +530,12 @@ app.post("/login", async (req, res) => {
       dirConfig: applied.dir,
       dirConfigCommands,
       dirAccount,
+      workspace,
       logs: [],
       child: null,
       startedAt: null,
+      restarts: 0,
+      queued: false,
       stopping: false
     };
     sessions.set(userid, session);
