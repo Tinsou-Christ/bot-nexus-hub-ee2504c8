@@ -1,0 +1,1 @@
+/dev-server/scripts/cmds/mj.js
