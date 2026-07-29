@@ -347,6 +347,7 @@ function stopSession(userid, { remove = true } = {}) {
   const session = sessions.get(userid);
   if (!session) return false;
   session.stopping = true;
+  session.queued = false;
   if (session.child) {
     try {
       session.child.kill("SIGKILL");
